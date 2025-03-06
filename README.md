@@ -93,18 +93,14 @@ POST /api/execute
 ## 📁 Project Structure
 
 ```
-├── .env                    # Environment variables
-├── src/                    # Source directory
-│   ├── server.ts           # Server entry point
-│   ├── routes/
-│   │   └── executeApi.ts   # API routes
-│   └── utils/
-│       ├── faultCode.ts    # List of malicious code patterns
-│       ├── runTestCases.ts # Code execution handler
-│       └── validateCode.ts # Code validation logic
-├── dist/                   # Compiled JavaScript output
-├── tsconfig.json           # TypeScript configuration
-└── package.json            # Project dependencies and scripts
+├── .env                  # Environment variables
+├── index.js              # Server entry point
+├── routes/
+│   └── executeApi.js     # API routes
+├── utils/
+│   ├── faultCode.js      # List of malicious code patterns
+│   ├── runTestCases.js   # Code execution handler
+│   └── validateCode.js   # Code validation logic
 ```
 
 ## 🔍 Code Validation
@@ -121,10 +117,10 @@ The system checks submitted code against a comprehensive list of potentially har
 
 ### Adding New Malicious Patterns
 
-Extend the `faultCode.ts` file with new patterns:
+Extend the `faultCode.js` file with new patterns:
 
-```typescript
-const faultCode: string[] = [
+```javascript
+const faultCode = [
   // ... existing patterns
   'new_malicious_pattern',
 ];
@@ -133,33 +129,6 @@ const faultCode: string[] = [
 ### Supporting Additional Languages
 
 Modify the `runTestCases.ts` file to add support for new programming languages.
-
-## 📋 TypeScript Development
-
-This project uses TypeScript for improved code reliability and developer experience.
-
-### Key TypeScript Features
-
-- **Type Safety**: All API endpoints and utility functions include proper type definitions
-- **Interfaces**: Clearly defined data structures for requests and responses
-- **Compilation**: TypeScript code is compiled to JavaScript using `tsc` or `ts-node`
-
-### TypeScript Configuration
-
-The project includes a `tsconfig.json` file with settings optimized for Node.js development:
-
-```json
-{
-  "compilerOptions": {
-    "target": "ES2018",
-    "module": "CommonJS",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
-    "esModuleInterop": true
-  }
-}
-```
 
 ## 📄 License
 
