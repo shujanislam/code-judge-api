@@ -2,7 +2,9 @@ import { exec } from "child_process";
 import fs from "fs";
 import path from "path";
 
-export const runTestCases = (language: string, code: string): Promise<string> => {
+import { boilerPlate } from './boilerPlate';
+
+export const runTestCases = (language: string, userCode: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     const tempDir = path.join(__dirname, "../../temp");
 
@@ -21,8 +23,10 @@ export const runTestCases = (language: string, code: string): Promise<string> =>
     const filename = `program.${extensions[language]}`;
     const filePath = path.join(tempDir, filename);
 
+    const finalCode = boilerPlate(language, userCode);
+  
     try {
-      fs.writeFileSync(filePath, code);
+      fs.writeFileSync(filePath, finalCode);
     } catch (err: any) {
       return reject(new Error(`Failed to write code file: ${err.message}`));
     }
@@ -37,7 +41,7 @@ export const runTestCases = (language: string, code: string): Promise<string> =>
       `docker run --rm -v ${tempDir}:/code/temp code-runner sh -c "${commands[language]}"`,
       (error, stdout, stderr) => {
         if (error) reject(new Error(stderr || error.message));
-        else resolve(stdout);
+        else resolve(stdout.trim());
       }
     );
   });
