@@ -4,7 +4,7 @@ export const boilerPlate = (language: string, userCode: string, problemId: strin
   const testCasesForProblem = testCases[problemId];
   if (!testCasesForProblem) return "";
 
-  // Handle different data types properly
+  // ✅ Define variables before using them
   const isStringProblem = problemId === "reverse-string";
   const isArrayProblem = problemId === "double-array";
 
@@ -17,25 +17,37 @@ export const boilerPlate = (language: string, userCode: string, problemId: strin
           ${userCode}
       }
 
-      const inputs = ${JSON.stringify(inputs)};
-      const expectedOutputs = ${JSON.stringify(expectedOutputs)};
+      const testCases = ${JSON.stringify(testCasesForProblem)};
 
-      for (let i = 0; i < inputs.length; i++) {
-          const result = userFunction(...inputs[i]);
-          console.log(result === expectedOutputs[i] ? "Test Passed" : "Test Failed");
-      }
-    `,
+      testCases.forEach(({ input, expected }, index) => {
+          try {
+              console.log("Running Test", index + 1);
+              console.log("Input:", input);
+              
+              const result = userFunction(...input);
+              
+              console.log("Output:", result);
+              console.log("Expected:", expected);
+              
+              console.log(\`Test \${index + 1}: \`, result === expected ? "Passed" : "Failed");
+          } catch (error) {
+              console.error(\`Test \${index + 1} Failed: \`, error.message);
+          }
+      });
+  `,
 
     python: `
       def user_function(${isArrayProblem ? "arr" : isStringProblem ? "s" : "a, b"}):
           ${userCode.replace(/\n/g, "\n    ")}
 
-      inputs = ${JSON.stringify(inputs)}
-      expected_outputs = ${JSON.stringify(expectedOutputs)}
+      test_cases = ${JSON.stringify(testCasesForProblem)}
 
-      for i in range(len(inputs)):
-          result = user_function(*inputs[i])
-          print("Test Passed" if result == expected_outputs[i] else "Test Failed")
+      for index, tc in enumerate(test_cases):
+          try:
+              result = user_function(*tc["input"])
+              print(f"Test {index + 1}: {'Passed' if result == tc['expected'] else 'Failed'}")
+          except Exception as e:
+              print(f"Test {index + 1} Failed: {str(e)}")
     `,
 
     c: `
@@ -114,7 +126,7 @@ export const boilerPlate = (language: string, userCode: string, problemId: strin
           `}
           return 0;
       }
-    `
+    `,
   };
 
   return boilerplates[language] || "";

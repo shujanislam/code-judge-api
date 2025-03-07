@@ -9,6 +9,19 @@ export const testCases: { [key: string]: { input: any[]; expected: any }[] } = {
     { input: [4, 5], expected: 20 },
     { input: [-2, 8], expected: -16 }
   ],
+  "divide-function": [
+    { input: [49, 7], expected: 7 },
+    { input: [50, 5], expected: 10 },
+    { input: [-2, 2], expected: -1 }
+  ],
+  "lowercase-string": [
+    { "input": ["Hello"], "expected": "hello" },
+    { "input": ["FOOBAR"], "expected": "foobar" }
+  ],
+  "concatenate-two-strings": [
+    { "input": ["hello", "world"], "expected": "helloworld" },
+    { "input": ["foo", "bar"], "expected": "foobar" }
+  ],
   "reverse-string": [
     { input: ["hello"], expected: "olleh" },
     { input: ["world"], expected: "dlrow" },
