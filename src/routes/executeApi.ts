@@ -5,7 +5,7 @@ import { validateCode } from "../utils/validateCode";
 const router = Router();
 
 router.post("/api/execute", async (req: Request, res: Response): Promise<void> => {
-  const { language, code }: { language: string; code: string } = req.body;
+  const { language, code, problemId }: { language: string; code: string, problemId: string } = req.body;
 
   if (validateCode(code)) {
     res.status(400).json({ success: false, message: "Malicious code detected" });
@@ -13,7 +13,7 @@ router.post("/api/execute", async (req: Request, res: Response): Promise<void> =
   }
 
   try {
-    const output = await runTestCases(language, code);
+    const output = await runTestCases(language, code, problemId);
     res.status(200).json({ success: true, output });
     console.log(output);
   } catch (err: any) {

@@ -2,7 +2,7 @@
 FROM alpine:latest
 
 # Install necessary dependencies
-RUN apk add --no-cache python3 nodejs npm g++ make
+RUN apk add --no-cache python3 nodejs npm g++ gcc make
 
 # Set working directory
 WORKDIR /code

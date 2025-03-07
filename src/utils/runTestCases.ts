@@ -1,10 +1,9 @@
 import { exec } from "child_process";
 import fs from "fs";
 import path from "path";
+import { boilerPlate } from "./boilerPlate";
 
-import { boilerPlate } from './boilerPlate';
-
-export const runTestCases = (language: string, userCode: string): Promise<string> => {
+export const runTestCases = (language: string, userCode: string, problemId: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     const tempDir = path.join(__dirname, "../../temp");
 
@@ -13,18 +12,17 @@ export const runTestCases = (language: string, userCode: string): Promise<string
     const extensions: { [key: string]: string } = {
       python: "py",
       javascript: "js",
-      cpp: "cpp",
+      c: "c",
     };
 
-    if (!extensions[language]) {
-      return reject(new Error("Unsupported Language"));
-    }
+    if (!extensions[language]) return reject(new Error("Unsupported Language"));
 
     const filename = `program.${extensions[language]}`;
     const filePath = path.join(tempDir, filename);
 
-    const finalCode = boilerPlate(language, userCode);
-  
+    const finalCode = boilerPlate(language, userCode, problemId);
+    if (!finalCode) return reject(new Error("Invalid problem ID or language"));
+
     try {
       fs.writeFileSync(filePath, finalCode);
     } catch (err: any) {
@@ -34,7 +32,7 @@ export const runTestCases = (language: string, userCode: string): Promise<string
     const commands: { [key: string]: string } = {
       python: `python3 /code/temp/${filename}`,
       javascript: `node /code/temp/${filename}`,
-      cpp: `g++ /code/temp/${filename} -o /code/temp/program && /code/temp/program`,
+      c: `gcc /code/temp/${filename} -o /code/temp/program && /code/temp/program`,
     };
 
     exec(
