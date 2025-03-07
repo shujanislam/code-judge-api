@@ -15,7 +15,7 @@ This service provides an API endpoint that:
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/shujanislam/code-execution-api.git
+git clone https://github.com/shujanislam/code-judge-api.git
 cd code-judge-api
 
 # Install dependencies
